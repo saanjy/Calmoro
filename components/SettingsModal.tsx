@@ -23,7 +23,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="w-full sm:max-w-md bg-white dark:bg-surface rounded-t-3xl sm:rounded-3xl shadow-2xl border-t sm:border border-zinc-200 dark:border-zinc-900 p-6 sm:p-8 mx-0 sm:mx-4 animate-in slide-in-from-bottom-10 sm:zoom-in duration-300">
+      <div className="w-full sm:max-w-md bg-white/70 dark:bg-zinc-950/70 backdrop-blur-xl rounded-t-3xl sm:rounded-3xl shadow-2xl border-t sm:border border-white/20 dark:border-white/10 p-6 sm:p-8 mx-0 sm:mx-4 animate-in slide-in-from-bottom-10 sm:zoom-in duration-300">
         <div className="flex justify-between items-center mb-6 sm:mb-8">
           <h2 className="text-xl sm:text-2xl font-light text-zinc-900 dark:text-white tracking-tight">Settings</h2>
           <button onClick={onClose} className="text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 transition-colors">
@@ -42,7 +42,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
                   type="number"
                   value={settings.pomodoroDuration}
                   onChange={(e) => handleChange('pomodoroDuration', Number(e.target.value))}
-                  className="w-full p-2 sm:p-3 rounded-xl bg-zinc-50 dark:bg-surfaceHighlight border border-transparent focus:border-zinc-300 dark:focus:border-zinc-700 outline-none text-center text-base sm:text-lg font-medium dark:text-white transition-all"
+                  className="w-full p-2 sm:p-3 rounded-xl bg-black/5 dark:bg-white/5 border border-transparent focus:border-zinc-300 dark:focus:border-zinc-700 outline-none text-center text-base sm:text-lg font-medium dark:text-white transition-all"
                 />
               </div>
               <div>
@@ -51,7 +51,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
                   type="number"
                   value={settings.shortBreakDuration}
                   onChange={(e) => handleChange('shortBreakDuration', Number(e.target.value))}
-                  className="w-full p-2 sm:p-3 rounded-xl bg-zinc-50 dark:bg-surfaceHighlight border border-transparent focus:border-zinc-300 dark:focus:border-zinc-700 outline-none text-center text-base sm:text-lg font-medium dark:text-white transition-all"
+                  className="w-full p-2 sm:p-3 rounded-xl bg-black/5 dark:bg-white/5 border border-transparent focus:border-zinc-300 dark:focus:border-zinc-700 outline-none text-center text-base sm:text-lg font-medium dark:text-white transition-all"
                 />
               </div>
               <div>
@@ -60,7 +60,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
                   type="number"
                   value={settings.longBreakDuration}
                   onChange={(e) => handleChange('longBreakDuration', Number(e.target.value))}
-                  className="w-full p-2 sm:p-3 rounded-xl bg-zinc-50 dark:bg-surfaceHighlight border border-transparent focus:border-zinc-300 dark:focus:border-zinc-700 outline-none text-center text-base sm:text-lg font-medium dark:text-white transition-all"
+                  className="w-full p-2 sm:p-3 rounded-xl bg-black/5 dark:bg-white/5 border border-transparent focus:border-zinc-300 dark:focus:border-zinc-700 outline-none text-center text-base sm:text-lg font-medium dark:text-white transition-all"
                 />
               </div>
             </div>

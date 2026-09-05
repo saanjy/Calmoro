@@ -86,7 +86,7 @@ const CalendarView: React.FC<CalendarViewProps> = ({ stats }) => {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto mt-4 sm:mt-8 p-4 sm:p-6 bg-white dark:bg-surface rounded-3xl border border-zinc-100 dark:border-zinc-900 shadow-sm animate-in fade-in zoom-in duration-300">
+    <div className="w-full max-w-md mx-auto mt-4 sm:mt-8 p-4 sm:p-6 bg-white/70 dark:bg-zinc-950/70 backdrop-blur-xl rounded-3xl border border-white/20 dark:border-white/10 shadow-sm animate-in fade-in zoom-in duration-300">
         
         {/* Header */}
         <div className="flex justify-between items-center mb-6">

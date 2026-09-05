@@ -33,19 +33,19 @@ const TaskList: React.FC<TaskListProps> = ({
   };
 
   return (
-    <div className="w-full max-w-md mx-auto p-4 sm:p-6 bg-white dark:bg-surface rounded-3xl shadow-sm border border-zinc-100 dark:border-zinc-900">
+    <div className="w-full max-w-md mx-auto p-4 sm:p-6 bg-white/70 dark:bg-zinc-950/70 backdrop-blur-xl rounded-3xl shadow-sm border border-white/20 dark:border-white/10">
       <div className="flex justify-between items-center mb-4 sm:mb-6">
         <h2 className="text-lg font-semibold text-zinc-800 dark:text-zinc-100">Tasks</h2>
         <button
           onClick={() => setIsAdding(!isAdding)}
-          className="p-2 rounded-full bg-zinc-50 dark:bg-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-600 dark:text-zinc-300 transition-colors"
+          className="p-2 rounded-full bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 text-zinc-600 dark:text-zinc-300 transition-colors"
         >
           <Plus size={18} />
         </button>
       </div>
 
       {isAdding && (
-        <form onSubmit={handleSubmit} className="mb-6 p-4 bg-zinc-50 dark:bg-surfaceHighlight rounded-2xl animate-in fade-in zoom-in duration-200 border border-zinc-100 dark:border-zinc-800">
+        <form onSubmit={handleSubmit} className="mb-6 p-4 bg-white/50 dark:bg-white/5 backdrop-blur-md rounded-2xl animate-in fade-in zoom-in duration-200 border border-black/5 dark:border-white/10">
           <input
             type="text"
             placeholder="What needs to be done?"

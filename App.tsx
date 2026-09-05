@@ -230,11 +230,21 @@ function App() {
   `;
 
   return (
-    <div className={`min-h-screen flex flex-col bg-zinc-50 dark:bg-black transition-colors duration-500 ${isFocusMode ? 'justify-center' : ''}`}>
+    <div className={`relative min-h-screen flex flex-col transition-colors duration-500 ${isFocusMode ? 'justify-center' : ''}`}>
       
+      {/* Dynamic Blurred Background */}
+      <div className="fixed inset-0 z-0 overflow-hidden bg-zinc-50 dark:bg-black transition-colors duration-500">
+        <img 
+          src={isDarkMode ? '/src/assets/images/cozy_bg_dark_1788616348168.jpg' : '/src/assets/images/cozy_bg_light_1788616363653.jpg'} 
+          className="w-full h-full object-cover opacity-60 dark:opacity-40 blur-[8px] scale-105 transition-all duration-1000"
+          alt="Cozy Background"
+        />
+        <div className="absolute inset-0 bg-zinc-50/50 dark:bg-black/60 backdrop-blur-sm transition-colors duration-500"></div>
+      </div>
+
       {/* Navbar */}
       {!isFocusMode && (
-        <nav className="w-full p-4 sm:p-6 flex flex-col sm:flex-row justify-between items-center max-w-5xl mx-auto z-10 gap-4">
+        <nav className="relative z-10 w-full p-4 sm:p-6 flex flex-col sm:flex-row justify-between items-center max-w-5xl mx-auto gap-4">
             <div className="flex items-center gap-3 self-start sm:self-center">
                 <h1 className="text-2xl font-light tracking-wide text-zinc-800 dark:text-zinc-100">
                     Calmoro
@@ -283,19 +293,19 @@ function App() {
       {isFocusMode && (
           <button 
             onClick={() => setIsFocusMode(false)}
-            className="absolute top-6 right-6 p-2 bg-zinc-100 dark:bg-zinc-900 hover:bg-zinc-200 dark:hover:bg-zinc-800 rounded-full transition-colors z-50 text-zinc-500"
+            className="absolute top-6 right-6 p-2 bg-white/20 dark:bg-black/40 hover:bg-white/40 dark:hover:bg-black/60 backdrop-blur-md rounded-full transition-colors z-50 text-zinc-600 dark:text-zinc-400"
           >
               <Minimize2 size={20} />
           </button>
       )}
 
       {/* Main Content */}
-      <main className={`flex-1 w-full max-w-3xl mx-auto p-4 flex flex-col items-center ${isFocusMode ? 'justify-center' : ''}`}>
+      <main className="relative z-10 flex-1 w-full max-w-3xl mx-auto p-4 flex flex-col items-center justify-center">
         
         {activeView === 'timer' && (
             <div className={`w-full flex flex-col items-center animate-in fade-in slide-in-from-bottom-8 duration-700 ${isFocusMode ? 'scale-110' : ''}`}>
                 {/* Mode Toggles */}
-                <div className="flex p-1 space-x-1 mb-8 sm:mb-10 bg-zinc-200 dark:bg-surfaceHighlight rounded-full scale-90 sm:scale-100 origin-center">
+                <div className="flex p-1 space-x-1 mb-8 sm:mb-10 bg-white/50 dark:bg-surfaceHighlight/50 backdrop-blur-md rounded-full scale-90 sm:scale-100 origin-center border border-zinc-200/50 dark:border-zinc-800/50">
                     {Object.values(TimerMode).map((m) => (
                         <button
                             key={m}
@@ -324,10 +334,10 @@ function App() {
                 </div>
 
                 {/* Controls & Active Task Display */}
-                <div className="w-full max-w-md text-center mb-10">
+                <div className="w-full max-w-md text-center mb-6">
                     <div className="min-h-[3rem] flex items-center justify-center px-4">
                         {activeTaskId ? (
-                            <div className="flex items-center gap-3 px-5 py-2 bg-white dark:bg-surface border border-zinc-200 dark:border-zinc-800 rounded-full shadow-sm animate-in zoom-in max-w-full">
+                            <div className="flex items-center gap-3 px-5 py-2 bg-white/80 dark:bg-surface/80 backdrop-blur-md border border-zinc-200/50 dark:border-zinc-800/50 rounded-full shadow-sm animate-in zoom-in max-w-full">
                                 <span className="w-2 h-2 rounded-full bg-pomodoro animate-pulse shrink-0"></span>
                                 <span className="text-sm font-medium text-zinc-700 dark:text-zinc-200 truncate">
                                     {tasks.find(t => t.id === activeTaskId)?.title}
@@ -340,7 +350,7 @@ function App() {
                                 </button>
                             </div>
                         ) : (
-                            <p className="text-zinc-400 dark:text-zinc-600 text-sm font-light tracking-wide italic px-4">"{quote}"</p>
+                            <p className="text-zinc-600 dark:text-zinc-300 text-sm font-medium tracking-wide italic px-4">"{quote}"</p>
                         )}
                     </div>
 
@@ -349,7 +359,7 @@ function App() {
         )}
 
         {activeView === 'tasks' && (
-            <div className="w-full flex justify-center animate-in fade-in slide-in-from-bottom-8 duration-700">
+            <div className="w-full max-w-2xl flex flex-col items-center animate-in fade-in slide-in-from-bottom-8 duration-700">
                 <TaskList 
                     tasks={tasks}
                     activeTaskId={activeTaskId}
