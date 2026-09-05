@@ -126,8 +126,8 @@ const CircularTimer: React.FC<CircularTimerProps> = ({
                     {formattedTime}
                 </div>
                 {!isActive && (
-                    <div className="absolute -right-4 sm:-right-6 top-1/2 -translate-y-1/2 opacity-0 group-hover/time:opacity-100 transition-opacity text-zinc-400">
-                        <Edit3 size={16} />
+                    <div className="absolute left-full top-1/2 -translate-y-1/2 ml-2 sm:ml-4 opacity-0 group-hover/time:opacity-100 transition-opacity text-zinc-400">
+                        <Edit3 size={20} />
                     </div>
                 )}
             </div>
