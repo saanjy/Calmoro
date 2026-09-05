@@ -6,6 +6,8 @@ import CircularTimer from './components/CircularTimer';
 import TaskList from './components/TaskList';
 import CalendarView from './components/CalendarView';
 import SettingsModal from './components/SettingsModal';
+import bgDark from './src/assets/images/cozy_bg_dark_1788616348168.jpg';
+import bgLight from './src/assets/images/cozy_bg_light_1788616363653.jpg';
 
 function App() {
   // --- State ---
@@ -235,7 +237,7 @@ function App() {
       {/* Dynamic Blurred Background */}
       <div className="fixed inset-0 z-0 overflow-hidden bg-zinc-50 dark:bg-black transition-colors duration-500">
         <img 
-          src={isDarkMode ? '/src/assets/images/cozy_bg_dark_1788616348168.jpg' : '/src/assets/images/cozy_bg_light_1788616363653.jpg'} 
+          src={isDarkMode ? bgDark : bgLight} 
           className="w-full h-full object-cover opacity-60 dark:opacity-40 blur-[8px] scale-105 transition-all duration-1000"
           alt="Cozy Background"
         />
