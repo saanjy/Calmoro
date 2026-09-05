@@ -1,13 +1,11 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Settings as SettingsIcon, BarChart2, Calendar as CalendarIcon, Moon, Sun, Volume2, VolumeX, Maximize2, Minimize2, Clock } from 'lucide-react';
+import { Settings as SettingsIcon, Calendar as CalendarIcon, Moon, Sun, Maximize2, Minimize2, Clock, ListTodo } from 'lucide-react';
 import { TimerMode, Task, DailyStats, Settings, SoundType } from './types';
 import { DEFAULT_SETTINGS, MODE_COLORS, MOTIVATIONAL_QUOTES } from './constants';
 import CircularTimer from './components/CircularTimer';
 import TaskList from './components/TaskList';
-import StatsView from './components/StatsView';
 import CalendarView from './components/CalendarView';
 import SettingsModal from './components/SettingsModal';
-import { playNotificationSound, playBackgroundNoise, stopBackgroundNoise } from './utils/soundUtils';
 
 function App() {
   // --- State ---
@@ -35,9 +33,8 @@ function App() {
   const [streak, setStreak] = useState(0);
   
   const [isDarkMode, setIsDarkMode] = useState(true); // Default to dark
-  const [activeView, setActiveView] = useState<'timer' | 'stats' | 'calendar'>('timer');
+  const [activeView, setActiveView] = useState<'timer' | 'tasks' | 'calendar'>('timer');
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const [activeSound, setActiveSound] = useState<SoundType>('none');
   const [isFocusMode, setIsFocusMode] = useState(false);
   
   const [quote, setQuote] = useState(MOTIVATIONAL_QUOTES[0]);
@@ -116,8 +113,6 @@ function App() {
     setIsActive(false);
     setTimeLeft(0);
     if (timerRef.current) clearInterval(timerRef.current);
-    
-    playNotificationSound();
 
     if (mode === TimerMode.POMODORO) {
         // Update Stats
@@ -215,21 +210,6 @@ function App() {
     if (activeTaskId === id) setActiveTaskId(null);
   };
 
-  const toggleSound = () => {
-      const sounds: SoundType[] = ['none', 'white_noise', 'brown'];
-      const currentIndex = sounds.indexOf(activeSound);
-      const nextIndex = (currentIndex + 1) % sounds.length;
-      const nextSound = sounds[nextIndex];
-      
-      setActiveSound(nextSound);
-      
-      if (nextSound === 'none') {
-          stopBackgroundNoise();
-      } else {
-          playBackgroundNoise(nextSound === 'white_noise' ? 'white' : 'brown');
-      }
-  };
-
   useEffect(() => {
       if (!isActive) {
           let newDuration = 0;
@@ -243,7 +223,7 @@ function App() {
   }, [settings, mode]);
 
   const navButtonClass = (view: string) => `
-    flex items-center justify-center space-x-2 px-4 py-2 rounded-full transition-all duration-300 text-sm
+    flex items-center justify-center space-x-2 px-4 py-2 rounded-full transition-all duration-300 text-sm whitespace-nowrap
     ${activeView === view 
         ? 'bg-zinc-900 dark:bg-zinc-100 text-white dark:text-black font-medium shadow-lg' 
         : 'text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-900'}
@@ -261,18 +241,18 @@ function App() {
                 </h1>
             </div>
             
-            <div className="flex items-center w-full sm:w-auto justify-center gap-1 bg-white dark:bg-surface rounded-full p-1.5 shadow-sm border border-zinc-200 dark:border-zinc-900 overflow-x-auto">
+            <div className="flex items-center w-full sm:w-auto justify-start sm:justify-center gap-1 bg-white dark:bg-surface rounded-full p-1.5 shadow-sm border border-zinc-200 dark:border-zinc-900 overflow-x-auto hide-scrollbar">
                 <button onClick={() => setActiveView('timer')} className={`flex-1 sm:flex-none ${navButtonClass('timer')}`}>
-                    <Clock size={16} />
+                    <Clock size={16} className="shrink-0" />
                     <span>Timer</span>
                 </button>
-                <button onClick={() => setActiveView('calendar')} className={`flex-1 sm:flex-none ${navButtonClass('calendar')}`}>
-                    <CalendarIcon size={16} />
-                    <span>Calendar</span>
+                <button onClick={() => setActiveView('tasks')} className={`flex-1 sm:flex-none ${navButtonClass('tasks')}`}>
+                    <ListTodo size={16} className="shrink-0" />
+                    <span>Tasks</span>
                 </button>
-                <button onClick={() => setActiveView('stats')} className={`flex-1 sm:flex-none ${navButtonClass('stats')}`}>
-                    <BarChart2 size={16} />
-                    <span>Stats</span>
+                <button onClick={() => setActiveView('calendar')} className={`flex-1 sm:flex-none ${navButtonClass('calendar')}`}>
+                    <CalendarIcon size={16} className="shrink-0" />
+                    <span>Calendar</span>
                 </button>
             </div>
 
@@ -364,48 +344,21 @@ function App() {
                         )}
                     </div>
 
-                    <div className="mt-6 flex justify-center space-x-4">
-                        <button 
-                            onClick={toggleSound}
-                            className={`p-4 rounded-full transition-all duration-300 ${
-                                activeSound !== 'none' 
-                                ? 'bg-zinc-900 dark:bg-zinc-100 text-white dark:text-black shadow-glow' 
-                                : 'bg-zinc-100 dark:bg-surface text-zinc-400 dark:text-zinc-600 hover:bg-zinc-200 dark:hover:bg-zinc-800'
-                            }`}
-                            title="Background Noise"
-                        >
-                            {activeSound === 'none' ? <VolumeX size={20} /> : <Volume2 size={20} />}
-                        </button>
-                    </div>
-                    {activeSound !== 'none' && (
-                        <div className="mt-2 text-xs font-bold uppercase tracking-widest text-zinc-400">
-                            {activeSound.replace('_', ' ')}
-                        </div>
-                    )}
                 </div>
-
-                {/* Task List */}
-                {!isFocusMode && (
-                    <div className="w-full flex justify-center">
-                         <TaskList 
-                            tasks={tasks}
-                            activeTaskId={activeTaskId}
-                            onAddTask={handleAddTask}
-                            onToggleTask={toggleTask}
-                            onDeleteTask={deleteTask}
-                            onSelectActive={setActiveTaskId}
-                        />
-                    </div>
-                )}
             </div>
         )}
 
-        {activeView === 'stats' && (
-            <StatsView 
-                stats={stats} 
-                streak={streak} 
-                totalSessions={stats.reduce((acc, curr) => acc + curr.sessionsCompleted, 0)}
-            />
+        {activeView === 'tasks' && (
+            <div className="w-full flex justify-center animate-in fade-in slide-in-from-bottom-8 duration-700">
+                <TaskList 
+                    tasks={tasks}
+                    activeTaskId={activeTaskId}
+                    onAddTask={handleAddTask}
+                    onToggleTask={toggleTask}
+                    onDeleteTask={deleteTask}
+                    onSelectActive={setActiveTaskId}
+                />
+            </div>
         )}
 
         {activeView === 'calendar' && (
