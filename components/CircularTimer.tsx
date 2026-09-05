@@ -73,7 +73,21 @@ const CircularTimer: React.FC<CircularTimerProps> = ({
   };
 
   return (
-    <div className="relative flex items-center justify-center group w-full max-w-[280px] sm:max-w-[320px] aspect-square mx-auto">
+    <div className="relative flex items-center justify-center group w-full max-w-[320px] sm:max-w-[380px] aspect-square mx-auto">
+      {/* Outer Edit Button */}
+      {!isActive && !isEditing && (
+        <button
+          onClick={() => {
+            setEditValue(Math.floor(timeLeft / 60).toString());
+            setIsEditing(true);
+          }}
+          className="absolute -top-2 -right-2 sm:top-2 sm:right-2 p-3 bg-white/20 dark:bg-black/40 hover:bg-white/40 dark:hover:bg-black/60 backdrop-blur-md rounded-full transition-all text-zinc-600 dark:text-zinc-400 z-20 shadow-sm opacity-100 sm:opacity-0 sm:group-hover:opacity-100"
+          title="Edit Time"
+        >
+          <Edit3 size={18} />
+        </button>
+      )}
+
       <svg
         viewBox={`0 0 ${size} ${size}`}
         className="w-full h-full rotate-[-90deg] transition-all duration-500"
@@ -102,34 +116,50 @@ const CircularTimer: React.FC<CircularTimerProps> = ({
       {/* Inner Content - Absolutely Positioned to Center */}
       <div className="absolute inset-0 flex flex-col items-center justify-center text-zinc-800 dark:text-zinc-100">
         {isEditing ? (
-            <form onSubmit={handleEditSubmit} className="flex items-center justify-center mb-2 sm:mb-4">
-                <input 
-                    ref={inputRef}
-                    type="number" 
-                    className="w-24 sm:w-32 text-5xl sm:text-6xl font-bold bg-transparent text-center border-b-2 border-pomodoro outline-none text-zinc-900 dark:text-white"
-                    value={editValue}
-                    onChange={(e) => setEditValue(e.target.value)}
-                    onBlur={() => handleEditSubmit()}
-                />
-            </form>
-        ) : (
             <div 
-                className="relative group/time cursor-pointer"
-                onClick={() => {
-                    if (!isActive) {
-                        setEditValue(Math.floor(timeLeft / 60).toString());
-                        setIsEditing(true);
+                className="flex flex-col items-center animate-in zoom-in duration-200 w-full px-8 relative z-20"
+                onBlur={(e) => {
+                    if (!e.currentTarget.contains(e.relatedTarget as Node)) {
+                        handleEditSubmit();
                     }
                 }}
             >
-                <div className="text-6xl sm:text-7xl font-light tracking-tighter font-sans select-none tabular-nums">
-                    {formattedTime}
-                </div>
-                {!isActive && (
-                    <div className="absolute left-full top-1/2 -translate-y-1/2 ml-2 sm:ml-4 opacity-0 group-hover/time:opacity-100 transition-opacity text-zinc-400">
-                        <Edit3 size={20} />
+                <form onSubmit={handleEditSubmit} className="flex flex-col items-center justify-center w-full relative">
+                    <input 
+                        ref={inputRef}
+                        type="number" 
+                        className="w-full text-5xl sm:text-7xl font-light tracking-tighter bg-transparent text-center outline-none text-zinc-900 dark:text-white tabular-nums p-0 z-10 relative mb-4 h-16 sm:h-20"
+                        value={editValue}
+                        onChange={(e) => setEditValue(e.target.value)}
+                        autoFocus
+                    />
+                    
+                    {/* Range Slider Overlay */}
+                    <div className="w-4/5 sm:w-3/4 relative h-1 bg-zinc-200/50 dark:bg-zinc-800/50 rounded-full overflow-visible flex items-center mb-6">
+                        <input 
+                            type="range"
+                            min="1"
+                            max="120"
+                            value={editValue || 1}
+                            onChange={(e) => setEditValue(e.target.value)}
+                            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20"
+                        />
+                        {/* Custom Track Fill */}
+                        <div 
+                            className="h-full bg-pomodoro rounded-full pointer-events-none"
+                            style={{ width: `${Math.min(100, (parseInt(editValue || '1') / 120) * 100)}%` }}
+                        />
+                        {/* Custom Thumb */}
+                        <div 
+                            className="w-4 h-4 bg-white border-2 border-pomodoro rounded-full absolute pointer-events-none -translate-x-1/2 shadow-md"
+                            style={{ left: `${Math.min(100, (parseInt(editValue || '1') / 120) * 100)}%` }}
+                        />
                     </div>
-                )}
+                </form>
+            </div>
+        ) : (
+            <div className="text-6xl sm:text-7xl font-light tracking-tighter font-sans select-none tabular-nums cursor-default">
+                {formattedTime}
             </div>
         )}
         
