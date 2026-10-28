@@ -6,6 +6,7 @@ import CircularTimer from './components/CircularTimer';
 import TaskList from './components/TaskList';
 import CalendarView from './components/CalendarView';
 import SettingsModal from './components/SettingsModal';
+import FloatingParticles from './components/FloatingParticles';
 import bgDark from './src/assets/images/cozy_bg_dark_1788616348168.jpg';
 import bgLight from './src/assets/images/cozy_bg_light_1788616363653.jpg';
 
@@ -242,6 +243,7 @@ function App() {
           alt="Cozy Background"
         />
         <div className="absolute inset-0 bg-zinc-50/50 dark:bg-black/60 backdrop-blur-sm transition-colors duration-500"></div>
+        <FloatingParticles isDarkMode={isDarkMode} mode={mode} />
       </div>
 
       {/* Navbar */}

@@ -135,7 +135,7 @@ const CircularTimer: React.FC<CircularTimerProps> = ({
                     />
                     
                     {/* Range Slider Overlay */}
-                    <div className="w-4/5 sm:w-3/4 relative h-1 bg-zinc-200/50 dark:bg-zinc-800/50 rounded-full overflow-visible flex items-center mb-6">
+                    <div className="w-4/5 sm:w-3/4 relative h-1 bg-zinc-200/50 dark:bg-zinc-800/50 rounded-full overflow-visible flex items-center mb-2">
                         <input 
                             type="range"
                             min="1"
